@@ -331,6 +331,7 @@ console.log(Ford.speedUS); // 75 we get the speed in mi/h
 Ford.speedUS = 50;
 console.log(Ford); //we set the speed to new speed  Object { make: "Ford", speed: 80 }
 
+//1st way
 ///INHERITANCE BETWEEN CLASSES
 //using CONASTRUCTOR FUNCTION
 //WE will link  both classes prototype
@@ -433,3 +434,96 @@ tesla.chargeBattery(70); //70  sets to 70
 tesla.accelerates();
 tesla.breaks();
 console.log(tesla);
+
+//2nd way
+///INHERITANCE BETWEEN CLASSES
+//using ES6 clases
+
+//parent class
+class PersonClNew {
+  constructor(firstName, birthYear) {
+    //constructor inside the class is like a method    its the method of this PersonCl  class
+    //we can also pass argument to this constractor
+
+    this.firstName = firstName; //'this' will point to the new created  object
+    this.birthYear = birthYear;
+  }
+
+  // we can also add method to the class like this
+  //note methods wrote outside the constrauctor and  written inside class is automatically added to .prototype then all the object created  from that class  can use it
+
+  ///instance methods
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+  greet() {
+    console.log(`HEY ${this.firstName}`);
+  }
+
+  //statc method   that only specifc for the classPerson not in the prototaype of the created objectes
+  static hey() {
+    console.log('hey there😂'); //hey there😂'
+    console.log(this); // pointed to the PersonClNew
+  }
+}
+
+//student class  wihich is child class
+
+class studentCL extends PersonClNew {
+  // instead of Object.create()
+  //child inherits the parent class prototype  using 'extends' keyword
+  constructor(firstName, birthYear, course) {
+    super(firstName, birthYear); // parent class constructor  always should be first  and the super helps the child to inherit the property of parent class constructor
+    this.course = course;
+  }
+
+  //we can add introduce method  to our child class  studentCL  even if there is another introduce method in in parent it simply override it   this shows as polymorphisem
+  introduce() {
+    console.log(
+      `my name is${this.firstName} and i am born ${this.birthYear} and am studying ${this.course}`
+    );
+  }
+}
+
+const martha = new studentCL('martha', 1997, 'English');
+console.log(martha); //Object { firstName: "martha", birthYear: 1997, course: "English" }
+martha.calcAge(); //40
+martha.greet(); //HEY martha
+martha.introduce(); //my name ismartha and i am born 1997 and am studying English
+//note : so  we see student class inherit methods from personclnew class  and also we get the constractor property using super()
+
+//3nd way
+///INHERITANCE BETWEEN CLASSES
+//using Object.create()
+
+//so we will have a parent class
+
+const PersonProtos = {
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    /// this method can setup the DATA AUTOMATICALLY
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+const luuls = Object.create(PersonProtos);
+
+//lets do studentProto  as a child
+
+const StudentProto = Object.create(PersonProtos); //now we created sudentProto
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProtos.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+//now will create new object from studentProto
+
+const jay = Object.create(StudentProto);
+jay.init('jay', 1989, 'biology');
+console.log(jay); //Object { firstName: "jay", birthYear: 1989, course: "biology" }
+jay.calcAge();
+
+//note we see here objects becomes prototype of objects like    personsProto  is protoype of  -->studentProto  and studentProto prototype of ==> jay object
