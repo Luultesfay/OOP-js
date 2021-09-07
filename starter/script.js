@@ -668,3 +668,66 @@ Account.helper();
 acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
 console.log(acc1.getMovements());//
 */
+
+//coding challenge #4
+/*1. Re-create Challenge #3, but this time using ES6 classes: create an 'EVCl'
+child class of the 'CarCl1' class
+2. Make the 'charge' property private
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery'
+methods of this class, and also update the 'brake' method in the 'CarCl'
+class. Then experiment with chaining!
+Test data:
+§ Data car 1: 'Rivian' going at 120 km/h, with a charge of 23*/
+
+class CarCl1 {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+  accelerate() {
+    console.log(this.speed + 10);
+  }
+  break() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+    return this;
+  }
+
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+class EVCl extends CarCl1 {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  chargeBatterys(chargeTo) {
+    this.#charge = chargeTo;
+    return this;
+  }
+  //we will override the accelerate that is in prototype of parent class   by the new accelerate
+  //we are observing her polymorphisem
+  accelerates() {
+    //we have 2 the same method in the prototype chain the one who is first in the chain override the other one in this case child over ride the prototype of parent class
+    this.speed += 30;
+    this.#charge--;
+    console.log(
+      `${this.make} accelerates at the speed of ${
+        this.speed
+      }  km/h and  battery ${this.#charge} %`
+    );
+    return this;
+  }
+}
+const rivan = new EVCl('rivan', 180, 45);
+console.log(rivan);
+rivan.accelerates().accelerates(455).chargeBatterys(67).break();
+console.log(rivan);
