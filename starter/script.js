@@ -524,6 +524,42 @@ StudentProto.init = function (firstName, birthYear, course) {
 const jay = Object.create(StudentProto);
 jay.init('jay', 1989, 'biology');
 console.log(jay); //Object { firstName: "jay", birthYear: 1989, course: "biology" }
-jay.calcAge();
+jay.calcAge(); //48
 
 //note we see here objects becomes prototype of objects like    personsProto  is protoype of  -->studentProto  and studentProto prototype of ==> jay object
+
+//practice clases
+//lets creat Account class video 219
+
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.pin = pin;
+    this.movement = [];
+    this.locale = navigator.language;
+  }
+  //public interface
+  deposit(mov) {
+    this.movement.push(mov);
+  }
+
+  withDrow(mov) {
+    this.deposit(-mov);
+  }
+
+  loanApprove(mov) {
+    return true;
+  }
+
+  requestLoan(mov) {
+    if (this.loanApprove) this.deposit(mov);
+  }
+}
+const Acc1 = new Account('luul', 'USD', 1111);
+//Acc1.movement.push(200);//instead of push manually we will use to add deposit using  method clled deposit
+
+Acc1.deposit(100); //100 deposit
+Acc1.withDrow(500); //-500
+console.log(Acc1); //Object { owner: "luul", currency: "USD", pin: 1111, movement: (2) […], locale: "en-US" }
+Acc1.requestLoan(1000); //  1000 then request approved
