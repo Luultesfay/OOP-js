@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 //we will add the previous lecture explanation
 
 ///////////////////////////////////////
@@ -39,3 +39,19 @@ const matilda = new Person('Matilda', 2017); //Object { firstName: "matilda", bi
 const jack = new Person('Jack', 1975); //Object { firstName: "Jack", birthYear: 1975 }
 
 console.log(jonas instanceof Person); //true      // if  its not present it returns false
+*/
+
+const Company = function (companyName, YearCreated) {
+  (this.companyName = companyName), (this.YearCreated = YearCreated);
+};
+const airbnb = new Company('airbnbLTD', 1990);
+const google = new Company('googleLTD', 1997);
+
+Company.prototype.calcCampanyAge = function () {
+  return 2022 - this.YearCreated;
+};
+console.log(airbnb, google);
+console.log(airbnb.calcCampanyAge());
+console.log(google.calcCampanyAge());
+console.log(google.__proto__ === Company.prototype);
+console.log(Company.prototype.__proto__ === Object.prototype);
